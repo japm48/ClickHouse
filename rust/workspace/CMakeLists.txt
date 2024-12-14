@@ -21,7 +21,31 @@ function(clickhouse_import_crate)
         endif()
     endif()
 
-    corrosion_import_crate(${ARGN} NO_STD PROFILE ${profile} LOCKED FLAGS --offline)
+    corrosion_import_crate(
+        ${ARGN}
+        CRATES _ch_rust_skim_rust;_ch_rust_prql
+        NO_STD
+        PROFILE ${profile}
+        LOCKED
+        FLAGS --offline
+    )
+
+    corrosion_import_crate(
+        ${ARGN}
+        CRATES chcache
+        PROFILE release
+        LOCKED
+        FLAGS --offline
+    )
+    corrosion_set_env_vars(
+        chcache
+        RUSTFLAGS=
+        RUST_CFLAGS=
+        RUST_CXXFLAGS=
+        CFLAGS=
+        CXXFLAGS=
+    )
+    corrosion_set_hostbuild(chcache)
 endfunction()
 
 # -Wno-dollar-in-identifier-extension: cxx bridge complies names with '$'
