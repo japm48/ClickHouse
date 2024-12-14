@@ -53,13 +53,6 @@ macro(configure_rustc)
         list(APPEND RUSTFLAGS "-C" "link-arg=-mmacosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
     endif()
 
-    set(RUST_CARGO_BUILD_STD "")
-    # For more info: https://doc.rust-lang.org/beta/unstable-book/compiler-flags/sanitizer.html#memorysanitizer
-    if (SANITIZE STREQUAL "memory")
-        set(RUST_CARGO_BUILD_STD "build-std = [\"std\", \"panic_abort\", \"core\", \"alloc\"]")
-        list(APPEND RUSTFLAGS "-Zsanitizer=memory" "-Zsanitizer-memory-track-origins")
-    endif()
-
     list(TRANSFORM RUSTFLAGS PREPEND "\"")
     list(TRANSFORM RUSTFLAGS APPEND "\"")
     list(JOIN RUSTFLAGS "," RUSTFLAGS)
@@ -68,7 +61,6 @@ macro(configure_rustc)
     message(STATUS "RUST_CFLAGS: ${RUST_CFLAGS}")
     message(STATUS "RUST_CXXFLAGS: ${RUST_CXXFLAGS}")
     message(STATUS "RUSTFLAGS: ${RUSTFLAGS}")
-    message(STATUS "RUST_CARGO_BUILD_STD: ${RUST_CARGO_BUILD_STD}")
 
     set(RUST_VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../contrib/rust_vendor")
 endmacro()
