@@ -49,3 +49,12 @@ cd "$CH_TOP_DIR"/rust/workspace
 
 The `rustc --print=sysroot` part includes `std` dependencies, required to build with sanitizer flags. It must be kept
 in sync with the rustc version used in CI.
+
+#### Downloaing missing items manually
+
+First, get the index entry for missing version at a URL like `https://index.crates.io/un/wi/unwinding` (for `unwinding` package).
+Then, download the crate itseif
+
+```
+wget https://crates.io/api/v1/crates/unwinding/0.2.3/download
+```
